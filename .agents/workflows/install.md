@@ -15,6 +15,11 @@ brew install poppler pyenv
 
 # Ubuntu/Debian/WSL
 sudo apt-get update && sudo apt-get install -y poppler-utils libpoppler-cpp-dev
+
+# Windows Native (PowerShell/CMD)
+# Download Poppler for Windows and add it to your System PATH
+# Alternatively, install via choco:
+choco install poppler
 ```
 
 ## Step 2: Set up Python Environment
@@ -27,9 +32,16 @@ pyenv local 3.12.10
 ## Step 3: Install the Core Eagle Parse API
 The main backend API resides in `eagle-ml/llm`. You must create a virtual environment there and install dependencies.
 ```bash
+# macOS / Linux / WSL
 cd eagle-ml/llm
 python -m venv .env_eagle_parse
 source .env_eagle_parse/bin/activate
+pip install -r requirements_eagle_parse.txt
+
+# Windows Native (CMD)
+cd eagle-ml\llm
+python -m venv .env_eagle_parse
+.env_eagle_parse\Scripts\activate.bat
 pip install -r requirements_eagle_parse.txt
 ```
 *Note: If on Windows/Linux, verify that the `requirements_eagle_parse.txt` installs `vllm` or `ollama`. If on macOS Apple Silicon, ensure it installs `mlx-vlm`.*
@@ -41,8 +53,16 @@ python api.py --port 8002
 ```
 This runs the local inference server.
 
-## Step 5: Install the Windows Capture Frontend (For WSL Users)
-If the user is running the backend inside WSL (Windows Subsystem for Linux), the Python scripts cannot natively capture the Windows Desktop.
+## Step 5: Start the Client Capture User Interface
+If the user is running the backend API directly on Windows, they can simply run the Python wrapper script:
+```bash
+# Run from the root of the repository
+pip install pynput mss requests plyer
+python eagle_capture.py
+```
+
+### Alternatively: Compiling for WSL Users
+If the user is running the backend inside WSL (Windows Subsystem for Linux), the Python scripts inside Linux cannot natively capture the Windows Desktop.
 
 To solve this, the repository includes `eagle_capture.py` and `build_capture_exe.bat` in the root directory.
 
