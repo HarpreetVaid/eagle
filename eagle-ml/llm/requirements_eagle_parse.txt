@@ -1,0 +1,20 @@
+python-multipart
+rich
+typer[all]
+fastapi==0.129.0
+uvicorn[standard]
+eagle-parse[mlx]==1.3.4
+genson==1.3.0
+jsonschema==4.26.0
+python-dotenv
+python-box
+torchvision
+oracledb==3.4.2
+# git+https://github.com/huggingface/transformers.git
+
+
+# Force reinstall:
+# pip install --force-reinstall -r requirements_eagle_parse.txt
+
+# For pdf2image, additional step is required:
+# brew install poppler

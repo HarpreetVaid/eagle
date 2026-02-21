@@ -1,0 +1,290 @@
+./eagle.sh assistant --pipeline "fcall" --query "Exxon"
+
+{
+  "company": "ExxonMobil",
+  "ticker": "XOM"
+}
+The stock price of the ExxonMobil is 113.48999786376953. USD
+==================================================
+Time to retrieve answer: 16.426633964991197
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\",
+\"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\",
+\"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\",
+\"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}"
+--pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen2.5-VL-72B-Instruct-4bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\",
+\"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\",
+\"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\",
+\"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}"
+--pipeline "eagle-parse" --debug --options huggingface --options katanaml/eagle-qwen2-vl-7b --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+
+{
+  "invoice_no": "61356291",
+  "invoice_date": "09/06/2012",
+  "seller_name": "Chapman, Kim and Green",
+  "seller_address": "64731 James Branch, Smithmouth, NC 26872",
+  "seller_taxid": "949-84-9105",
+  "seller_iban": "GB50ACIE59715038217063",
+  "client_name": "Rodriguez-Stevens",
+  "client_address": "2280 Angela Plain, Hortonshire, MS 93248",
+  "client_taxid": "939-98-8477",
+  "invoice_items": [
+    {
+      "description": "Wine Glasses Goblets Pair Clear Glass",
+      "quantity": 5.0,
+      "net_price": 12.0,
+      "net_worth": 60.0,
+      "vat": "10%",
+      "gross_worth": 66.0
+    },
+    {
+      "description": "With Hooks Stemware Storage Multiple Uses Iron Wine Rack Hanging Glass",
+      "quantity": 4.0,
+      "net_price": 28.08,
+      "net_worth": 112.32,
+      "vat": "10%",
+      "gross_worth": 123.55
+    },
+    {
+      "description": "Replacement Corkscrew Parts Spiral Worm Wine Opener Bottle Houdini",
+      "quantity": 1.0,
+      "net_price": 7.5,
+      "net_worth": 7.5,
+      "vat": "10%",
+      "gross_worth": 8.25
+    },
+    {
+      "description": "HOME ESSENTIALS GRADIENT STEMLESS WINE GLASSES SET OF 4 20 FL OZ (591 ml) NEW",
+      "quantity": 1.0,
+      "net_price": 12.99,
+      "net_worth": 12.99,
+      "vat": "10%",
+      "gross_worth": 14.29
+    }
+  ],
+  "invoice_summary": [
+    {
+      "net_worth": 192.81,
+      "vat": 19.28,
+      "gross_worth": 212.09
+    }
+  ]
+}
+==================================================
+Time to retrieve answer: 47.84319644900097
+
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options mlx
+--options mlx-community/Qwen2.5-VL-72B-Instruct-4bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options huggingface
+--options katanaml/eagle-qwen2-vl-7b --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+
+[
+  {
+    "instrument_name": "UNITS BLACKROCK FIX INC DUB FDS PLC ISHS EUR INV GRD CP BD IDX/INST/E",
+    "valuation": 19049
+  },
+  {
+    "instrument_name": "UNITS ISHARES III PLC CORE EUR GOVT BOND UCITS ETF/EUR",
+    "valuation": 83488
+  },
+  {
+    "instrument_name": "UNITS ISHARES III PLC EUR CORP BOND 1-5YR UCITS ETF/EUR",
+    "valuation": 213030
+  },
+  {
+    "instrument_name": "UNIT ISHARES VI PLC/JP MORGAN USD E BOND EUR HED UCITS ETF DIST/HDGD/",
+    "valuation": 32774
+  },
+  {
+    "instrument_name": "UNITS XTRACKERS II SICAV/EUR HY CORP BOND UCITS ETF/-1D-/DISTR.",
+    "valuation": 23643
+  }
+]
+==================================================
+Time to retrieve answer: 22.78700271800335
+
+
+./eagle.sh "*" --pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen2.5-VL-72B-Instruct-4bit
+--crop-size 60 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.pdf"
+
+{
+  "invoice_number": "61356291",
+  "date_of_issue": "09/06/2012",
+  "seller": {
+    "name": "Chapman, Kim and Green",
+    "address": "64731 James Branch, Smithmouthouth, NC 26872",
+    "tax_id": "949-84-9105",
+    "iban": "GB50ACIE59715038217063"
+  },
+  "client": {
+    "name": "Rodriguez-Stevens",
+    "address": "2280 Angela Plain, Plain, MS 93248",
+    "tax_id": "939-98-8477"
+  },
+  "items": [
+    {
+      "description": "Wine Glasses Goblets Pair Clear",
+      "quantity": 5,
+      "unit": "each",
+      "net_price": 12.0,
+      "net_worth": 60.0,
+      "vat_percentage": 10,
+      "gross_worth": 66.0
+    },
+    {
+      "description": "With Hooks Stemware Storage Multiple Multiple Uses Iron Wine Rack Hanging",
+      "quantity": 4,
+      "unit": "each",
+      "net_price": 28.08,
+      "net_worth": 112.32,
+      "vat_percentage": 10,
+      "gross_worth": 123.55
+    },
+    {
+      "description": "Replacement Corkscrew Parts Spiral Worm Worm Wine Opener Bottle Houdini",
+      "quantity": 1,
+      "unit": "each",
+      "net_price": 7.5,
+      "net_worth": 7.5,
+      "vat_percentage": 10,
+      "gross_worth": 8.25
+    },
+    {
+      "description": "HOME ESSENTIALS GRADIENT STEMLESS WINE GLASSES SET OF 4 20 FL OZ (591 ml) NEW",
+      "quantity": 1,
+      "unit": "each",
+      "net_price": 12.99,
+      "net_worth": 12.99,
+      "vat_percentage": 10,
+      "gross_worth": 14.29
+    }
+  ],
+  "summary": {
+    "total_net_worth": 192.81,
+    "total_vat": 19.28,
+    "total_gross_worth": 212.09
+  }
+}
+==================================================
+Time to retrieve answer: 199.03000262507703
+
+
+################ OLLAMA vs MLX-VLM TEST ##################
+
+BONDS TABLE
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:8b-instruct-bf16 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+qwen3-vl:8b-instruct-bf16 - OK
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:30b-a3b-instruct-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+qwen3-vl:30b-a3b-instruct-q8_0 - OK
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options ollama --options mistral-small3.2:24b --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+mistral-small3.2:latest - OK
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options ollama --options ministral-3:14b-instruct-2512-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+ministral-3:14b-instruct-2512-q8_0 - OK
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit - OK
+
+./eagle.sh "[{\"instrument_name\":\"str\", \"valuation\":\"int\"}]" --pipeline "eagle-parse" --debug --options mlx --options lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bonds_table.png"
+
+lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit - OK
+
+
+
+FINANCIAL STATEMENT
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:8b-instruct-bf16 --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+qwen3-vl:8b-instruct-bf16 - FAIL
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:30b-a3b-instruct-q8_0 --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+qwen3-vl:30b-a3b-instruct-q8_0 - OK
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options ollama --options mistral-small3.2 --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+mistral-small3.2:latest - OK
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options ollama --options ministral-3:14b-instruct-2512-q8_0 --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+ministral-3:14b-instruct-2512-q8_0 - FAIL
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit - FAIL
+
+./eagle.sh "[{\"description_text\":\"str\", \"price_1\":\"str or null\", \"price_2\": \"str or null\"}]" --pipeline "eagle-parse" --debug --options mlx --options lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit --file-path "/Users/andrejb/Work/samples/tables/oracle_10k_2024_q1_small_table.png"
+
+lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit - FAIL
+
+
+
+INVOICE
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:8b-instruct-bf16 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+qwen3-vl:8b-instruct-bf16 - OK
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:30b-a3b-instruct-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+qwen3-vl:30b-a3b-instruct-q8_0 - OK
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options mistral-small3.2 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+mistral-small3.2 - OK
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options ministral-3:14b-instruct-2512-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+ministral-3:14b-instruct-2512-q8_0 - OK
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit - OK
+
+./eagle.sh "{\"invoice_no\":\"int\", \"invoice_date\":\"str\", \"seller_name\":\"str\", \"seller_address\":\"str\", \"seller_taxid\":\"str\", \"seller_iban\":\"str\", \"client_name\":\"str\", \"client_address\":\"str\", \"client_taxid\":\"str\", \"invoice_items\":[{\"description\":\"str\", \"quantity\":\"float\", \"net_price\":\"float\", \"net_worth\":\"float\", \"vat\":\"str\", \"gross_worth\":\"float\"}], \"invoice_summary\":[{\"net_worth\":\"float\", \"vat\":\"float\", \"gross_worth\":\"float\"}]}" --pipeline "eagle-parse" --debug --options mlx --options lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/invoice_1.jpg"
+
+lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit - OK
+
+
+
+BANK STATEMENT
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:8b-instruct-bf16 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+qwen3-vl:8b-instruct-bf16 - FAIL
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options qwen3-vl:30b-a3b-instruct-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+qwen3-vl:30b-a3b-instruct-q8_0 - OK
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options mistral-small3.2 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+mistral-small3.2 - OK
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options ollama --options ministral-3:14b-instruct-2512-q8_0 --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+ministral-3:14b-instruct-2512-q8_0 - FAIL
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options mlx --options mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit - FAIL
+
+./eagle.sh "{\"account_number\":\"int\", \"statement_date\":\"str\", \"period_covered\":\"str\", \"total_money_in\":\"str\", \"total_money_out\":\"str\", \"statement_items\":[{\"date\":\"str\", \"description\":\"str\", \"withdrawal\":\"float or null\", \"deposit\":\"float or null\", \"balance\":\"float\"}]}" --pipeline "eagle-parse" --debug --options mlx --options lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit --file-path "/Users/andrejb/Work/katana-git/eagle/eagle-ml/llm/data/bank_statement.png"
+
+lmstudio-community/Mistral-Small-3.2-24B-Instruct-2506-MLX-8bit - FAIL

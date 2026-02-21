@@ -1,0 +1,47 @@
+from abc import ABC, abstractmethod
+from typing import Any
+from typing import List
+import warnings
+
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+
+# Abstract Interface
+class Pipeline(ABC):
+    @abstractmethod
+    def run_pipeline(self,
+                     pipeline: str,
+                     query: str,
+                     file_path: str,
+                     hints_file_path: str = None,
+                     options: List[str] = None,
+                     crop_size: int = None,
+                     instruction: bool = False,
+                     validation: bool = False,
+                     ocr: bool = False,
+                     markdown: bool = False,
+                     table: bool = False,
+                     table_template: str = None,
+                     page_type: List[str] = None,
+                     debug_dir: str = None,
+                     debug: bool = False,
+                     local: bool = True) -> Any:
+        pass
+
+
+# Factory Method
+def get_pipeline(pipeline_name: str, model_cache: dict = None) -> Pipeline:
+    if pipeline_name == "eagle-parse":
+        from pipelines.eagle_parse.eagle_parse import EagleParsePipeline
+        return EagleParsePipeline(model_cache)
+    elif pipeline_name == "eagle-instructor":
+        from pipelines.eagle_instructor.eagle_instructor import EagleInstructorPipeline
+        return EagleInstructorPipeline()
+    elif pipeline_name == "stocks":
+        from pipelines.instructor.stocks import Stocks
+        return Stocks()
+    else:
+        raise ValueError(f"Unknown pipeline: {pipeline_name}")
+

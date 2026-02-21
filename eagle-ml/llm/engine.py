@@ -1,0 +1,138 @@
+import warnings
+import typer
+from typing_extensions import Annotated, List
+from pipelines.interface import get_pipeline
+import tempfile
+import os
+from rich import print
+from pipelines.eagle_parse.eagle_markdown import (
+    process_markdown_extraction
+)
+from pipelines.eagle_parse.eagle_table import (
+    process_table_extraction
+)
+
+
+# Disable parallelism in the Huggingface tokenizers library to prevent potential deadlocks and ensure consistent behavior.
+# This is especially important in environments where multiprocessing is used, as forking after parallelism can lead to issues.
+# Note: Disabling parallelism may impact performance, but it ensures safer and more predictable execution.
+os.environ['TOKENIZERS_PARALLELISM'] = 'false'
+
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+
+def run(query: Annotated[str, typer.Argument(help="The list of fields to fetch")],
+        file_path: Annotated[str, typer.Option(help="The file to process")] = None,
+        hints_file_path: Annotated[str, typer.Option(help="JSON file containing query hints")] = None,
+        pipeline: Annotated[str, typer.Option(help="Selected pipeline")] = "eagle-parse",
+        options: Annotated[List[str], typer.Option(help="Options to pass to the pipeline")] = None,
+        crop_size: Annotated[int, typer.Option(help="Crop size for extraction improvement")] = None,
+        instruction: Annotated[bool, typer.Option(help="Enable instruction query")] = False,
+        validation: Annotated[bool, typer.Option(help="Enable validation query")] = False,
+        ocr: Annotated[bool, typer.Option(help="Enable data ocr enhancement")] = False,
+        markdown: Annotated[bool, typer.Option(help="Enable markdown output")] = False,
+        table: Annotated[bool, typer.Option(help="Enable table query")] = False,
+        table_template: Annotated[str, typer.Option(help="Table template for table query")] = None,
+        page_type: Annotated[List[str], typer.Option(help="Page type query")] = None,
+        debug_dir: Annotated[str, typer.Option(help="Debug folder for multipage")] = None,
+        debug: Annotated[bool, typer.Option(help="Enable debug mode")] = False):
+
+    user_selected_pipeline = pipeline  # Modify this as needed
+
+    try:
+        rag = get_pipeline(user_selected_pipeline)
+
+        if markdown:
+            answer = process_markdown_extraction(rag, user_selected_pipeline, query, file_path, hints_file_path, options,
+                                                 crop_size, instruction, validation, ocr, markdown, page_type, debug_dir,
+                                                 debug)
+        elif table:
+            answer = process_table_extraction(rag, user_selected_pipeline, query, file_path, hints_file_path, options,
+                                             crop_size, instruction, validation, ocr, markdown, table_template, page_type,
+                                             debug_dir, debug)
+        else:
+            answer = rag.run_pipeline(user_selected_pipeline, query, file_path, hints_file_path, options, crop_size,
+                                      instruction, validation, ocr, markdown, table, table_template, page_type, debug_dir,
+                                      debug, False)
+
+        print(f"\nEagle response:\n")
+        print(answer)
+    except ValueError as e:
+        print(f"Caught an exception: {e}")
+
+
+async def run_from_api_engine(user_selected_pipeline, query, options_arr, crop_size, instruction, validation, ocr,
+                              markdown, table, table_template, page_type, file, hints_file, debug_dir, debug, model_cache=None):
+    try:
+        rag = get_pipeline(user_selected_pipeline, model_cache)
+
+        if file is not None:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_file_path = os.path.join(temp_dir, file.filename)
+                # Save the uploaded file to the temporary directory
+                with open(temp_file_path, 'wb') as temp_file:
+                    content = await file.read()
+                    temp_file.write(content)
+
+                hints_temp_path = None
+                if hints_file is not None:
+                    hints_temp_path = os.path.join(temp_dir, hints_file.filename)
+                    with open(hints_temp_path, 'wb') as hints_temp:
+                        hints_content = await hints_file.read()
+                        hints_temp.write(hints_content)
+
+                if markdown:
+                    answer = process_markdown_extraction(rag, user_selected_pipeline, query, temp_file_path, hints_temp_path,
+                                                         options_arr, crop_size, instruction, validation, ocr,
+                                                         markdown, page_type, debug_dir, debug)
+                else:
+                    answer = rag.run_pipeline(user_selected_pipeline, query, temp_file_path, hints_temp_path, options_arr,
+                                              crop_size, instruction, validation, ocr, markdown, table, table_template,
+                                              page_type, debug_dir, debug, False)
+        else:
+            answer = rag.run_pipeline(user_selected_pipeline, query, None, None, options_arr, crop_size, instruction,
+                                      validation, ocr, markdown, table, table_template, page_type, debug_dir,
+                                      debug, False)
+    except ValueError as e:
+        raise e
+
+    return answer
+
+
+# Add a new function for instruction-only processing
+async def run_from_api_engine_instruction(user_selected_pipeline, query, options_arr, debug_dir, debug, model_cache=None):
+    """
+    Instruction-only version of run_from_api_engine that doesn't require a file.
+    """
+    try:
+        rag = get_pipeline(user_selected_pipeline, model_cache)
+
+        # Call run_pipeline with file_path=None for instruction-only processing
+        answer = rag.run_pipeline(
+            user_selected_pipeline,
+            query,
+            None,  # No file path for instruction-only queries
+            None, # No hints file needed
+            options_arr,
+            None,  # No crop_size needed
+            False,  # No instruction needed
+            False, # No validation needed
+            False, # No ocr needed
+            False, # No markdown needed
+            False, # No table needed
+            None, # No table_template needed
+            None, # No page_type needed
+            debug_dir,
+            debug,
+            False
+        )
+    except ValueError as e:
+        raise e
+
+    return answer
+
+
+if __name__ == "__main__":
+    typer.run(run)

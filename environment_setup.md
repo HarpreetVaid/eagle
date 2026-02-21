@@ -1,0 +1,109 @@
+**Python environment setup** 
+
+*Setup Python Environment (Eagle is tested with Python 3.12.10) with `pyenv`:*
+
+1. Install `pyenv`:
+
+If you haven't already installed `pyenv`, you can do so using Homebrew with the following command:
+
+```
+brew update
+brew install pyenv
+
+```
+
+2. Install the desired Python version:
+
+With `pyenv` installed, you can now install a specific version of Python. For example, to install Python 3.12.10, you would use:
+
+```
+pyenv install 3.12.10
+```
+
+You can check available Python versions by running `pyenv install --list`.
+
+3. Set the global Python version:
+
+Once the installation is complete, you can set the desired Python version as the default (global) version on your system:
+
+```
+pyenv global 3.12.10
+```
+
+This command sets Python 3.12.10 as the default version for all shells.
+
+4. Verify the change:
+
+To ensure the change was successful, you can verify the current Python version by running:
+
+```
+python --version
+```
+
+If the output doesn’t reflect the change, you may need to restart your terminal or add `pyenv` to your shell's initialization script as follows:
+
+5. Configure your shell's initialization script:
+
+Add `pyenv` to your shell by adding the following lines to your `~/.bash_profile`, `~/.zprofile`, `~/.bashrc`, or `~/.zshrc` file:
+
+```
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+```
+
+After adding these lines, restart your terminal or source your profile script with `source ~/.bash_profile` (or the appropriate file for your shell).
+
+**Create Virtual Environments to Run Eagle Agents**
+
+1. Create virtual environments in `eagle-ml/llm` folder:
+
+```
+python -m venv .env_eagle_parse
+python -m venv .env_instructor
+```
+
+`.env_eagle_parse` is used for `eagle-parse` agent. `.env_instructor` is used for LLM function calling with `stocks` agent.
+
+2. Create virtual environment in `eagle-data/ocr` folder, only if you plan to run OCR service:
+
+```
+python -m venv .env_ocr
+```
+
+*Activate Virtual Environments and Install Dependencies*
+
+Activate each environment and install its dependencies using the corresponding `requirements.txt` file.
+
+For `eagle-parse` environment:
+
+1. Activate the environment:
+
+```
+source .env_eagle_parse/bin/activate
+```
+
+2. Install dependencies:
+
+```
+pip install -r requirements_eagle_parse.txt
+```
+
+Repeat the same for `instructor` environment.
+
+3. Poppler
+
+If you are on macOS or Linux, it might be required to install poppler:
+
+macOS:
+
+```
+brew install poppler
+```
+
+Linux:
+
+```
+!apt-get install poppler-utils libpoppler-cpp-dev
+!pip install -v -v python-poppler
+```
